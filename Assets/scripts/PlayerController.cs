@@ -19,7 +19,10 @@
         public GameObject losingPanel;
         public GameObject tappanel;
         public GameObject MainCam;
-        [SerializeField] private GameObject opps; // Opponent reference
+        private Animator opps;
+
+       [SerializeField] private GameObject opponent;
+
 
         private bool isControlled = false;
         private bool speedIncreased = false;
@@ -81,10 +84,11 @@
 
             if (hasFinishedRotating && Input.touchCount > 0)
             {
+
                 AddPushForce();
+                animator.SetBool("isPushing", true);
 
             }
-
 
         }
 
@@ -116,54 +120,39 @@
                 Debug.Log("istopped");
                 cc.StopFollowingPlayer();
             }
+    if (other.CompareTag("FallTriggerplay"))
+    {
+        hasFallen = true;
 
-            if (other.CompareTag("FallTriggerplay"))
-            {
-                // If player collides with the fall trigger
-                if (!hasFallen)
-                {
-                    Debug.Log("insidefall");
+        // Play falling animation
+        animator.SetBool("isPushing", false);
+        animator.SetTrigger("Fall"); // Optionally add a falling animation trigger
 
-                    Fall(); // Call the fall function when player collides with fall trigger
-                }
-            }
-        }
+        // Remove Rigidbody constraints to allow the player to fall freely
+        rb.constraints = RigidbodyConstraints.None;
 
-
-        private void Fall()
+        // Switch camera focus to opponent
+        CameraController cc = MainCam.GetComponent<CameraController>();
+        Debug.Log("fallistopped");
+        if (cc != null && opponent != null)
         {
-            hasFallen = true;
-
-            // Play falling animation
-            animator.SetTrigger("Fall");
-            animator.SetBool("isPushing",false);
-
-            // Remove Rigidbody constraints to allow the player to fall freely
-            rb.constraints = RigidbodyConstraints.None;
-
-
-            // Clear any movement forces
-            rb.velocity = Vector3.zero;
-            MainCam.transform.position = new Vector3(-0.74f,1.4481f,73.7f);
-            MainCam.transform.rotation = Quaternion.Euler(15,0,0);
-
-            // // Switch camera focus to opponent
-            // CameraController cc = MainCam.GetComponent<CameraController>();
-            // Debug.Log("fallistopped");
-            // if (cc != null)
-            // {
-            //     Debug.Log("iamnotnull");
-            //     cc.FocusOnOpponent(opponent.transform);
-            // }
-            // else
-            // {
-            //     Debug.Log("ccisnull");
-            // }
-
-            // Optionally, display losing UI if needed
-            losingPanel.SetActive(true);
+            Debug.Log("Switching focus to opponent");
+            cc.FocusOnOpponent(opponent.transform); // Call method to switch focus
+        }
+        else
+        {
+            Debug.Log("cc or opponent is null");
         }
 
+        // Optionally, display losing UI if needed
+        losingPanel.SetActive(true);
+        tappanel.SetActive(false);
+    }
+}
+        
+
+
+      
 
         private IEnumerator MoveToRingTarget(Vector3 targetPosition)
         {
@@ -202,12 +191,11 @@
             tappanel.SetActive(true);
             animator.SetBool("isPushing", true);
             
-            // opps=opponent.GetComponent<Animator>(){
-            //      opps.SetBool("isPushing",true);
-            // isMovingToRingTarget = false;
-            // }
+            opps = opponent.GetComponent<Animator>();
+            opps.SetBool("isPushing",true);
+            isMovingToRingTarget = false;
+            }
            
-        }
 
         public void StopPlayer()
         {
@@ -223,6 +211,8 @@
             }
             if (opponentFell)
             {
+                 rb.velocity = Vector3.zero;
+                 rb.angularVelocity = Vector3.zero;
                 rb.AddForce(transform.forward * 0, ForceMode.Impulse);
                 tappanel.SetActive(false);
             }
@@ -239,10 +229,10 @@
             return hasFinishedRotating;
         }
 
-       public IEnumerator RotateInPlace()
+    public IEnumerator RotateInPlace()
 {
     Quaternion initialRotation = transform.rotation;
-    Quaternion targetRotation = Quaternion.Euler(0, 180, 0);
+    Quaternion targetRotation = Quaternion.Euler(0, 90, 0);
     float elapsedTime = 0f;
     float rotationDuration = 1.0f;
 
@@ -258,18 +248,16 @@
 
     transform.rotation = targetRotation;
 
-    StopPlayerPush();
 }
-
-
         public void StopPlayerPush()
         {
 
             rb.velocity = Vector3.zero;
-
+            
         }
   public void TriggerPlayerVictory()
 {
+    RotateInPlace();
     // Trigger the player's victory animation
     animator.SetBool("isPushing",false);
     animator.SetBool("isWon", true);

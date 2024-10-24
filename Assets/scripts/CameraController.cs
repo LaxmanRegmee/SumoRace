@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -12,12 +11,11 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Vector3 stopRotationOffset = new Vector3(15, 30, 0); // New rotation when the camera stops
     [SerializeField] private float transitionSpeed = 2f; // Speed of the smooth transition
 
-    private Vector3 initialPosition; // To store the initial position of the camera
     private Quaternion initialRotation; // To store the initial rotation of the camera
     private Quaternion targetRotation; // Target rotation for smooth transition
     private bool stopFollowingPlayer = false; // Flag to indicate whether to stop following the player
     private bool isFocusingOnOpponent = false; // Flag to indicate if camera is focusing on the opponent
-    public Transform opponentTransform; // Reference to the opponent
+    private Transform opponentTransform; // Reference to the opponent
 
     void FixedUpdate() 
     {
@@ -51,7 +49,7 @@ public class CameraController : MonoBehaviour
             return;
         }
 
-        // Calculate the camera's target position based on player position and offsets
+        // Regular player following logic
         Vector3 playerTargetPosition = playerTransform.position + positionOffset;
 
         // Check if the player's z-coordinate exceeds the threshold
@@ -79,14 +77,15 @@ public class CameraController : MonoBehaviour
     public void StopFollowingPlayer()
     {
         stopFollowingPlayer = true;
+        isFocusingOnOpponent = false; // Ensure it doesn't focus on the opponent
     }
     
     // Focus on the opponent when the player falls
-     public void FocusOnOpponent(Transform opponentTransform)
-     {
-         Debug.Log("isfocusonoppest");
-         isFocusingOnOpponent = true;
-         this.opponentTransform = opponentTransform;
-       stopFollowingPlayer = false; // Ensure the camera no longer follows the player
+    public void FocusOnOpponent(Transform opponentTransform)
+    {
+        Debug.Log("Switching to focus on opponent");
+        isFocusingOnOpponent = true;
+        this.opponentTransform = opponentTransform;
+        stopFollowingPlayer = false; // Ensure the camera no longer follows the player
     }
 }

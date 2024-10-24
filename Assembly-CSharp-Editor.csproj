@@ -1255,6 +1255,10 @@
       <HintPath>Library\ScriptAssemblies\Unity.Entities.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Cloud.Common.Runtime.Embedded">
+      <HintPath>Library\ScriptAssemblies\Unity.Cloud.Common.Runtime.Embedded.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
       <Private>False</Private>
@@ -1265,10 +1269,6 @@
     </Reference>
     <Reference Include="Unity.XR.OpenXR.Features.ConformanceAutomation">
       <HintPath>Library\ScriptAssemblies\Unity.XR.OpenXR.Features.ConformanceAutomation.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Cloud.Common.Runtime.Embedded">
-      <HintPath>Library\ScriptAssemblies\Unity.Cloud.Common.Runtime.Embedded.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Entities.Hybrid">
@@ -1383,12 +1383,12 @@
       <HintPath>Library\ScriptAssemblies\Unity.Cloud.AppLinking.Editor.Embedded.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.AdaptivePerformance.Profiler.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.AdaptivePerformance.Profiler.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="UnityEditor.XR.LegacyInputHelpers">
       <HintPath>Library\ScriptAssemblies\UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.AdaptivePerformance.Profiler.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.AdaptivePerformance.Profiler.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">

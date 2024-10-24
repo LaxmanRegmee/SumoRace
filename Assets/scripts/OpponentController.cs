@@ -70,10 +70,6 @@ public class OpponentController : MonoBehaviour
         // Stop the pushing animation
         opponentAnimator.SetBool("isPushing", false);
 
-        // Play a falling animation (if you have one)
-        opponentAnimator.SetTrigger("Fall");
-        Debug.Log("Opponent triggered fall animation.");
-
         // Stop applying force to the opponent
         isPushing = false;
 
